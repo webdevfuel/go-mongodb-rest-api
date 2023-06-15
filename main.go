@@ -11,6 +11,8 @@ import (
 func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
+	router.Use(middleware.AllowContentType("application/json"))
+	router.Use(middleware.SetHeader("content-type", "application/json"))
 
 	client := connectToDB()
 	defer disconnectFromDB(client)
