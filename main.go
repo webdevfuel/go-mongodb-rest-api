@@ -19,7 +19,10 @@ func main() {
 
 	db := "gomongo"
 	h := newHandler(client, db)
-	router.Get("/", h.helloWorld)
+	router.Route("/api", func(r chi.Router) {
+		r.Get("/", h.helloWorld)
+		r.Post("/auth/register", h.registerUser)
+	})
 
 	ok := make(chan bool)
 	addr := "localhost:3000"
