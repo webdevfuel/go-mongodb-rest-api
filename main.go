@@ -11,9 +11,13 @@ import (
 func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
-	router.Get("/", func(w http.ResponseWriter, _ *http.Request) {
-		w.Write([]byte("Hello, world!"))
-	})
+
+	client := connectToDB()
+	defer disconnectFromDB(client)
+
+	db := "gomongo"
+	h := newHandler(client, db)
+	router.Get("/", h.helloWorld)
 
 	ok := make(chan bool)
 	addr := "localhost:3000"
